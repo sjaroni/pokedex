@@ -37,7 +37,7 @@ async function renderAllPokemon(responseAsJson) {
   await renderMorePokemonCounter();
 }
 
-async function renderMorePokemonCounter(){
+async function renderMorePokemonCounter(){  
   let morePokemonCounterText = document.getElementById('morePokemonCounter');
   morePokemonCounterText.innerHTML = ' ' + morePokemonCounter + ' ';
 }
