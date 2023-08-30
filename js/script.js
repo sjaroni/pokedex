@@ -1,4 +1,5 @@
 let loadPokemonCounter = 20;
+let morePokemonCounter = 20;
 let loadPokemonOffset = 0;
 let pokemonImages = [];
 let pokemonBackgroundColor = [];
@@ -9,7 +10,7 @@ let currentImage;
 let allPokemon = [];
 
 function init() {
-  loadAllPokemon();
+  loadAllPokemon();  
 }
 
 async function loadAllPokemon() {
@@ -31,36 +32,14 @@ async function renderAllPokemon(responseAsJson) {
     formattedPokemonNumber = formatNumber(j);
     await renderPokedex(i, pokemon);
     allPokemon.push(pokemon);
-    j++;
+    j++;    
   }
+  await renderMorePokemonCounter();
 }
 
-async function renderPokedex(i, pokemon){
-  pokedex.innerHTML += /*html*/ `          
-  <div onclick="showPokemonDetail(${i}, '${pokemon}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" id="${formattedPokemonNumber}" style="background-color: ${pokemonBackgroundColor[i]}" class="pokemon" title="${pokemon}">
-    <img class="pokemonImages" src="${pokemonImages[i]}" alt="Picture of ${pokemon}">
-    <p class="pokemonName">${pokemon}</p>
-  </div>`;
-}
-
-async function renderPokedexDetails(pokemon) {
-  let url = `${API_URL.single}${pokemon}`;
-  let response = await fetch(url);
-  let responseAsJson = await response.json();
-  pokemonImages.push(responseAsJson['sprites']['other']['home']['front_default'],);
-
-  let formattedWeight = responseAsJson['weight']/10;
-  let formattedHeight = responseAsJson['height']/10;
-  
-  pokemonWeight.push(formattedWeight,);
-  pokemonHeight.push(formattedHeight,);
-}
-
-async function renderPokedexSpeciesColor(pokemon) {
-  let url = `${API_URL.species}${pokemon}`;
-  let response = await fetch(url);
-  let responseAsJson = await response.json();
-  pokemonBackgroundColor.push(responseAsJson['color']['name']);
+async function renderMorePokemonCounter(){
+  let morePokemonCounterText = document.getElementById('morePokemonCounter');
+  morePokemonCounterText.innerHTML = ' ' + morePokemonCounter + ' ';
 }
 
 function formatNumber(number) {
@@ -68,8 +47,8 @@ function formatNumber(number) {
 }
 
 async function loadMorePokemon() {
-  loadPokemonCounter = loadPokemonCounter + 20;
-  loadPokemonOffset = loadPokemonOffset + 20;
+  loadPokemonCounter = loadPokemonCounter + morePokemonCounter;
+  loadPokemonOffset = loadPokemonOffset + morePokemonCounter;
   pokemonImages = [];
   loadAllPokemon();
 }
@@ -79,19 +58,9 @@ async function showPokemonDetail(id, pokemon, formattedPokemonNumber, pokemonBac
   document.getElementById('detail').classList.toggle('d-none');
   document.getElementById('right').innerHTML = `#${formattedPokemonNumber}`;
   document.getElementById('headline').style = `background-color: ${pokemonBackgroundColor}`;
-  document.getElementById(
-    'pokemonPicture',
-  ).innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
-  document.getElementById('general').innerHTML = `
-    <h1>${pokemon}</h1>
-    <div id="pokemonType"></div>
-    <div id="bmi">
-      <div id="pokemonWeight"><span class="value">${pokemonWeight} kg</span><span class="unit">Weight</span></div>
-      <div id="pokemonHeight"><span class="value">${pokemonHeight} m</span><span class="unit">Heigth</span></div>
-    </div>
-    `;
-
-    await loadPokemonStats(pokemon);
+  document.getElementById('pokemonPicture').innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
+  await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);
+  await loadPokemonStats(pokemon);
 }
 
 async function loadPokemonStats(pokemon) {
@@ -108,55 +77,6 @@ async function loadPokemonStats(pokemon) {
     }
   renderPokemonStats(pokemonSum);  
   await renderPokemonType(responseAsJson);
-}
-
-async function renderPokemonType(responseAsJson){
-  let pokemonType = document.getElementById('pokemonType');
-  let pokemonTypes = responseAsJson['types'].length;
-  for (let i = 0; i < pokemonTypes; i++) {
-    let element = responseAsJson['types'][i]['type']['name'];
-    let backgroundColor = bgColorSpecies[element];    
-    pokemonType.innerHTML += `<button class="pokemonTypeButton" style="background-color: ${backgroundColor}">${element}</button>`;
-  }
-}
-
-function renderPokemonStats(pokemonSum){
-  document.getElementById('stats').innerHTML = `
-    <h2>Base Stats</h2>
-    <div class="pokemonStats">
-      <div class="statsRow">
-        <div class="statsColumn">
-          <span class="unit" title="Hit Points">HP</span>
-          <span class="value">${pokemonStats[0]}</span>
-        </div>
-        <div class="statsColumn">
-          <span class="unit" title="Attack">Atk</span>
-          <span class="value">${pokemonStats[1]}</span>
-        </div>
-      </div>  
-      <div class="statsRow">
-        <div class="statsColumn">
-          <span class="unit" title="Defense">Def</span>
-          <span class="value">${pokemonStats[2]}</span>
-        </div>
-        <div class="statsColumn">
-          <span class="unit" title="Special-Attack">SpA</span>
-          <span class="value">${pokemonStats[3]}</span>
-        </div>
-      </div>
-      <div class="statsRow">
-        <div class="statsColumn">
-          <span class="unit" title="Special-Defense">SpD</span>
-          <span class="value">${pokemonStats[4]}</span>
-        </div>
-        <div class="statsColumn">
-          <span class="unit" title="Speed">Spd</span>
-          <span class="value">${pokemonStats[5]}</span>
-        </div>
-      </div>
-    </div>
-    <h2>Total ${pokemonSum}</h2>
-    `;
 }
 
 function closeDetail() {
