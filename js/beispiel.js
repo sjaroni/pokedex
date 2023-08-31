@@ -35,9 +35,13 @@ name und url
 
 id
 
+https://pokeapi.co/api/v2/pokemon-species/7/
+names, language, name
+
 Einzelnes Pokemon
 https://veekun.com/dex/pokemon/pikachu
 https://pokeapi.co/api/v2/pokemon/pikachu
+https://pokeapi.co/api/v2/pokemon/squirtle
 name
 
   abilities - 0 - ability - name

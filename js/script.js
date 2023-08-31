@@ -3,6 +3,7 @@ let morePokemonCounter = 20;
 let loadPokemonOffset = 0;
 let pokemonImages = [];
 let pokemonBackgroundColor = [];
+let pokemonGermanName = [];
 let pokemonWeight = [];
 let pokemonHeight = [];
 let pokemonStats = [];
@@ -13,33 +14,31 @@ function init() {
   loadAllPokemon();  
 }
 
+/* loading from api */
 async function loadAllPokemon() {
   let url = `${API_URL.species}?limit=${loadPokemonCounter}&offset=0`;  
   let response = await fetch(url);
   let responseAsJson = await response.json();
-  await renderAllPokemon(responseAsJson);
+  await showAllPokemon(responseAsJson);
 }
 
-async function renderAllPokemon(responseAsJson) {
+/* show pokedex */
+async function showAllPokemon(responseAsJson) {
   let pokedex = document.getElementById('pokedex');
   pokedex.innerHTML = '';
   j = 1;
   allPokemon = [];
   for (let i = 0; i < responseAsJson['results'].length; i++) {
     const pokemon = responseAsJson['results'][i]['name'];
-    await renderPokedexDetails(j);
+    await getPokemonPicture(j);
+    await getPokemonBmi(j);
     await renderPokedexSpeciesColor(j);
     formattedPokemonNumber = formatNumber(j);
-    await renderPokedex(i, pokemon);
+    await renderPokedexPokemon(i, pokemon);
     allPokemon.push(pokemon);
     j++;    
   }
-  await renderMorePokemonCounter();
-}
-
-async function renderMorePokemonCounter(){  
-  let morePokemonCounterText = document.getElementById('morePokemonCounter');
-  morePokemonCounterText.innerHTML = ' ' + morePokemonCounter + ' ';
+  await renderMorePokemon();
 }
 
 function formatNumber(number) {
@@ -50,6 +49,8 @@ async function loadMorePokemon() {
   loadPokemonCounter = loadPokemonCounter + morePokemonCounter;
   loadPokemonOffset = loadPokemonOffset + morePokemonCounter;
   pokemonImages = [];
+  pokemonBackgroundColor = [];
+  pokemonGermanName = [];
   loadAllPokemon();
 }
 
@@ -57,7 +58,7 @@ async function showPokemonDetail(id, pokemon, formattedPokemonNumber, pokemonBac
   document.getElementById('container').classList.toggle('d-none');
   document.getElementById('detail').classList.toggle('d-none');
   document.getElementById('right').innerHTML = `#${formattedPokemonNumber}`;
-  document.getElementById('headline').style = `background-color: ${pokemonBackgroundColor}`;
+  document.getElementById('headline').style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
   document.getElementById('pokemonPicture').innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
   await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);
   await loadPokemonStats(pokemon);
@@ -70,13 +71,30 @@ async function loadPokemonStats(pokemon) {
     let responseAsJson = await response.json();
     let pokemonSum = 0;    
     for (let i = 0; i < responseAsJson['stats'].length; i++) {
-       pokemonStats.push(
-        responseAsJson['stats'][i]['base_stat']
-       );
+      pokemonStats.push(responseAsJson['stats'][i]['base_stat']);
       pokemonSum = pokemonSum + pokemonStats[i];
     }
   renderPokemonStats(pokemonSum);  
   await renderPokemonType(responseAsJson);
+}
+
+async function getPokemonPicture(pokemon) {
+  let url = `${API_URL.single}${pokemon}`;
+  let response = await fetch(url);
+  let responseAsJson = await response.json();
+  pokemonImages.push(
+    responseAsJson['sprites']['other']['home']['front_default'],
+  );  
+}
+
+async function getPokemonBmi(pokemon){
+  let url = `${API_URL.single}${pokemon}`;
+  let response = await fetch(url);
+  let responseAsJson = await response.json();
+  let formattedWeight = responseAsJson['weight'] / 10;
+  let formattedHeight = responseAsJson['height'] / 10;
+  pokemonWeight.push(formattedWeight);
+  pokemonHeight.push(formattedHeight);
 }
 
 function closeDetail() {
@@ -84,28 +102,16 @@ function closeDetail() {
   document.getElementById('detail').classList.toggle('d-none');
 }
 
-function previousImage() {
-  currentImage = getCurrentImage();
-  if (currentImage == 0) {
-    showImage(imagesArrayLength - 1);
-  } else {
-    showImage(currentImage - 1);
-  }
-}
-
-function nextImage() {
-  currentImage = getCurrentImage();
-  if (currentImage == imagesArrayLength - 1) {
-    showImage(0);
-  } else {
-    showImage(currentImage + 1);
-  }
-}
-
-function getCurrentImage() {
-  return +document.getElementById('index').innerHTML;
-}
-
 function doNotClose(event) {
   event.stopPropagation();
+}
+
+function getLanguage() {
+  let language = localStorage.getItem('language');
+  document.getElementById('whoAmI').innerHTML = `Zuletzt war ${who} hier!`;
+}
+
+function setLanguage() {
+  let language = document.getElementById('myInput').value;
+  localStorage.setItem('language', language);  
 }

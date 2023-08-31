@@ -67,7 +67,7 @@ header {
   height: 40vh;
   object-fit: contain;
   position: relative;
-  border-radius: 30px;
+  border-radius: 30px;  
 }
 
 .headlineInfo {

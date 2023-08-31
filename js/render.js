@@ -1,42 +1,36 @@
-async function renderPokedex(i, pokemon){
+/* showing each pokemon on pokedex */
+function renderPokedexPokemon(i, pokemon) {
   pokedex.innerHTML += /*html*/ `          
-  <div onclick="showPokemonDetail(${i}, '${pokemon}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" id="${formattedPokemonNumber}" style="background-color: ${pokemonBackgroundColor[i]}" class="pokemon" title="${pokemon}">
+  <div onclick="showPokemonDetail(${i}, '${pokemon}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
+      id="${formattedPokemonNumber}" style="background: linear-gradient(${pokemonBackgroundColor[i]}, #9198e5);" class="pokemon" title="${pokemon}">
     <img class="pokemonImages" src="${pokemonImages[i]}" alt="Picture of ${pokemon}">
     <p class="pokemonName">${pokemon}</p>
   </div>`;
 }
 
-async function renderPokedexDetails(pokemon) {
-  let url = `${API_URL.single}${pokemon}`;
-  let response = await fetch(url);
-  let responseAsJson = await response.json();
-  pokemonImages.push(responseAsJson['sprites']['other']['home']['front_default'],);
-
-  let formattedWeight = responseAsJson['weight']/10;
-  let formattedHeight = responseAsJson['height']/10;
-  
-  pokemonWeight.push(formattedWeight,);
-  pokemonHeight.push(formattedHeight,);
-}
-
+/* get infos of species */
 async function renderPokedexSpeciesColor(pokemon) {
   let url = `${API_URL.species}${pokemon}`;
   let response = await fetch(url);
   let responseAsJson = await response.json();
   pokemonBackgroundColor.push(responseAsJson['color']['name']);
+  pokemonGermanName.push(responseAsJson['names'][5]['name']);
+  //pokemonBackgroundColor.push(responseAsJson['color']['name']);
 }
 
-async function renderPokemonType(responseAsJson){
+/* render color of species */
+function renderPokemonType(responseAsJson) {
   let pokemonType = document.getElementById('pokemonType');
   let pokemonTypes = responseAsJson['types'].length;
   for (let i = 0; i < pokemonTypes; i++) {
     let element = responseAsJson['types'][i]['type']['name'];
-    let backgroundColor = bgColorSpecies[element];    
+    let backgroundColor = bgColorSpecies[element];
     pokemonType.innerHTML += `<button class="pokemonTypeButton" style="background-color: ${backgroundColor}">${element}</button>`;
   }
 }
 
-async function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight){
+/* getting general infos */
+function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight) {
   document.getElementById('general').innerHTML = `
   <h1>${pokemon}</h1>
   <div id="pokemonType"></div>
@@ -47,7 +41,8 @@ async function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight){
   `;
 }
 
-function renderPokemonStats(pokemonSum){
+/* render basic stats of each pokemon */
+function renderPokemonStats(pokemonSum) {
   document.getElementById('stats').innerHTML = `
     <h2>Base Stats</h2>
     <div class="pokemonStats">
@@ -84,4 +79,10 @@ function renderPokemonStats(pokemonSum){
     </div>
     <h2>Total ${pokemonSum}</h2>
     `;
+}
+
+/* getting more pokemon? */
+async function renderMorePokemon(){  
+  let morePokemonCounterText = document.getElementById('morePokemonCounter');
+  morePokemonCounterText.innerHTML = ' ' + morePokemonCounter + ' ';
 }
