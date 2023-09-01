@@ -3,20 +3,21 @@ let morePokemonCounter = 20;
 let loadPokemonOffset = 0;
 let pokemonImages = [];
 let pokemonBackgroundColor = [];
-let pokemonGermanName = [];
+let allPokemon = [];
+let allPokemonGerman = [];
 let pokemonWeight = [];
 let pokemonHeight = [];
 let pokemonStats = [];
 let currentImage;
-let allPokemon = [];
 
-function init() {
-  loadAllPokemon();  
+async function init() {
+  await loadAllPokemon();
+  getLanguage();
 }
 
 /* loading from api */
 async function loadAllPokemon() {
-  let url = `${API_URL.species}?limit=${loadPokemonCounter}&offset=0`;  
+  let url = `${API_URL.species}?limit=${loadPokemonCounter}&offset=0`;
   let response = await fetch(url);
   let responseAsJson = await response.json();
   await showAllPokemon(responseAsJson);
@@ -36,7 +37,7 @@ async function showAllPokemon(responseAsJson) {
     formattedPokemonNumber = formatNumber(j);
     await renderPokedexPokemon(i, pokemon);
     allPokemon.push(pokemon);
-    j++;    
+    j++;
   }
   await renderMorePokemon();
 }
@@ -50,31 +51,42 @@ async function loadMorePokemon() {
   loadPokemonOffset = loadPokemonOffset + morePokemonCounter;
   pokemonImages = [];
   pokemonBackgroundColor = [];
-  pokemonGermanName = [];
+  allPokemonGerman = [];
   loadAllPokemon();
 }
 
-async function showPokemonDetail(id, pokemon, formattedPokemonNumber, pokemonBackgroundColor, pokemonWeight, pokemonHeight) {
+async function showPokemonDetail(
+  id,
+  pokemon,
+  formattedPokemonNumber,
+  pokemonBackgroundColor,
+  pokemonWeight,
+  pokemonHeight,
+) {
   document.getElementById('container').classList.toggle('d-none');
   document.getElementById('detail').classList.toggle('d-none');
   document.getElementById('right').innerHTML = `#${formattedPokemonNumber}`;
-  document.getElementById('headline').style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
-  document.getElementById('pokemonPicture').innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
+  document.getElementById(
+    'headline',
+  ).style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
+  document.getElementById(
+    'pokemonPicture',
+  ).innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
   await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);
   await loadPokemonStats(pokemon);
 }
 
 async function loadPokemonStats(pokemon) {
-    pokemonStats = [];
-    let url = `${API_URL.single}${pokemon}`;
-    let response = await fetch(url);
-    let responseAsJson = await response.json();
-    let pokemonSum = 0;    
-    for (let i = 0; i < responseAsJson['stats'].length; i++) {
-      pokemonStats.push(responseAsJson['stats'][i]['base_stat']);
-      pokemonSum = pokemonSum + pokemonStats[i];
-    }
-  renderPokemonStats(pokemonSum);  
+  pokemonStats = [];
+  let url = `${API_URL.single}${pokemon}`;
+  let response = await fetch(url);
+  let responseAsJson = await response.json();
+  let pokemonSum = 0;
+  for (let i = 0; i < responseAsJson['stats'].length; i++) {
+    pokemonStats.push(responseAsJson['stats'][i]['base_stat']);
+    pokemonSum = pokemonSum + pokemonStats[i];
+  }
+  renderPokemonStats(pokemonSum);
   await renderPokemonType(responseAsJson);
 }
 
@@ -84,10 +96,10 @@ async function getPokemonPicture(pokemon) {
   let responseAsJson = await response.json();
   pokemonImages.push(
     responseAsJson['sprites']['other']['home']['front_default'],
-  );  
+  );
 }
 
-async function getPokemonBmi(pokemon){
+async function getPokemonBmi(pokemon) {
   let url = `${API_URL.single}${pokemon}`;
   let response = await fetch(url);
   let responseAsJson = await response.json();
@@ -106,12 +118,32 @@ function doNotClose(event) {
   event.stopPropagation();
 }
 
-function getLanguage() {
-  let language = localStorage.getItem('language');
-  document.getElementById('whoAmI').innerHTML = `Zuletzt war ${who} hier!`;
+function setLanguage() {  
+  let language;
+  let flagImage = document.getElementById('languageHeader');  
+  flagImage.classList.toggle('grayscale');
+
+  if (flagImage.classList.contains('grayscale')) {
+    language = 'en';
+  } else {
+    language = 'de';
+  }
+  console.log(language);
+  localStorage.setItem('language', language);
 }
 
-function setLanguage() {
-  let language = document.getElementById('myInput').value;
-  localStorage.setItem('language', language);  
+
+function getLanguage() {
+  let language = localStorage.getItem('language');
+  if (!language) {
+    language = 'en';
+    localStorage.setItem('language', language);
+  }
+  else if (language == 'en')
+  {   
+    document.getElementById('languageHeader').classList.add('grayscale');
+  }
+  else{   
+    document.getElementById('languageHeader').classList.remove('grayscale');
+  }
 }

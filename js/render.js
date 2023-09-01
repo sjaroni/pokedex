@@ -14,8 +14,7 @@ async function renderPokedexSpeciesColor(pokemon) {
   let response = await fetch(url);
   let responseAsJson = await response.json();
   pokemonBackgroundColor.push(responseAsJson['color']['name']);
-  pokemonGermanName.push(responseAsJson['names'][5]['name']);
-  //pokemonBackgroundColor.push(responseAsJson['color']['name']);
+  allPokemonGerman.push(responseAsJson['names'][5]['name']);
 }
 
 /* render color of species */

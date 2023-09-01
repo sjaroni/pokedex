@@ -20,10 +20,17 @@ body {
 header {
   background-color: #d42937;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   height: 80px;
 }
+
+header img{
+  height: 25px;
+  cursor: pointer;
+}
+
+
 
 .detail-bg {
   background-color: #2b292c;
@@ -112,6 +119,10 @@ h1 {
 
 .d-none {
   display: none !important;
+}
+
+.grayscale{
+  filter: grayscale(1);
 }
 
 .pokemon {
