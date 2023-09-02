@@ -9,10 +9,11 @@ let pokemonWeight = [];
 let pokemonHeight = [];
 let pokemonStats = [];
 let currentImage;
+let language;
 
 async function init() {
-  await loadAllPokemon();
   getLanguage();
+  await loadAllPokemon();
 }
 
 /* loading from api */
@@ -71,14 +72,14 @@ async function showPokemonDetail(
   ).style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
   document.getElementById(
     'pokemonPicture',
-  ).innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
-  await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);
-  await loadPokemonStats(pokemon);
+  ).innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;  
+  await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);  
+  await loadPokemonStats(id);
 }
 
-async function loadPokemonStats(pokemon) {
+async function loadPokemonStats(id) {
   pokemonStats = [];
-  let url = `${API_URL.single}${pokemon}`;
+  let url = `${API_URL.single}${id}`;
   let response = await fetch(url);
   let responseAsJson = await response.json();
   let pokemonSum = 0;
@@ -118,8 +119,7 @@ function doNotClose(event) {
   event.stopPropagation();
 }
 
-function setLanguage() {  
-  let language;
+async function setLanguage() {  
   let flagImage = document.getElementById('languageHeader');  
   flagImage.classList.toggle('grayscale');
 
@@ -127,14 +127,13 @@ function setLanguage() {
     language = 'en';
   } else {
     language = 'de';
-  }
-  console.log(language);
+  }  
   localStorage.setItem('language', language);
+  await loadAllPokemon();
 }
 
-
-function getLanguage() {
-  let language = localStorage.getItem('language');
+function getLanguage() {  
+  language = localStorage.getItem('language');
   if (!language) {
     language = 'en';
     localStorage.setItem('language', language);

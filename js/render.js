@@ -1,10 +1,11 @@
 /* showing each pokemon on pokedex */
-function renderPokedexPokemon(i, pokemon) {
+function renderPokedexPokemon(i, pokemon) {  
+  let pokemonText = language === 'en' ? `${pokemon}` : `${allPokemonGerman[i]}`;
   pokedex.innerHTML += /*html*/ `          
-  <div onclick="showPokemonDetail(${i}, '${pokemon}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
-      id="${formattedPokemonNumber}" style="background: linear-gradient(${pokemonBackgroundColor[i]}, #9198e5);" class="pokemon" title="${pokemon}">
-    <img class="pokemonImages" src="${pokemonImages[i]}" alt="Picture of ${pokemon}">
-    <p class="pokemonName">${pokemon}</p>
+  <div onclick="showPokemonDetail(${i}, '${pokemonText}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
+      id="${formattedPokemonNumber}" style="background: linear-gradient(${pokemonBackgroundColor[i]}, #9198e5);" class="pokemon" title="Picture of ${pokemonText}">
+    <img class="pokemonImages" title="Picture of ${pokemonText}" src="${pokemonImages[i]}" alt="Picture of ${pokemonText}">
+    <p class="pokemonName">${pokemonText}</p>
   </div>`;
 }
 
@@ -14,7 +15,7 @@ async function renderPokedexSpeciesColor(pokemon) {
   let response = await fetch(url);
   let responseAsJson = await response.json();
   pokemonBackgroundColor.push(responseAsJson['color']['name']);
-  allPokemonGerman.push(responseAsJson['names'][5]['name']);
+  allPokemonGerman.push(responseAsJson['names'][5]['name'].toLowerCase());
 }
 
 /* render color of species */

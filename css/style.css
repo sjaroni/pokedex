@@ -18,7 +18,7 @@ body {
 }
 
 header {
-  background-color: #d42937;
+  background-color: #d42937;  
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -27,10 +27,14 @@ header {
 
 header img{
   height: 25px;
-  cursor: pointer;
 }
 
-
+header div{
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
 
 .detail-bg {
   background-color: #2b292c;
@@ -94,7 +98,7 @@ a {
 
 h1 {
   margin-block-start: 0;
-  margin-block-end: 0;
+  margin-block-end: 0;  
 }
 
 #pokedex {
@@ -126,8 +130,7 @@ h1 {
 }
 
 .pokemon {
-  font-size: 22px;
-  background-color: rgb(115, 115, 164);
+  font-size: 22px;  
   height: 250px;
   width: 250px;
   margin: 16px;
