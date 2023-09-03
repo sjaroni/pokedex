@@ -16,7 +16,11 @@
   <body onload="init()">
     <div id="container" class="container">
       <header>
-        <h1>Pokedex</h1><div onclick="setLanguage()"><img class="grayscale" title="Namen übersetzen" id="languageHeader" src="./img/german.png" alt="Language">Namen übersetzen</div>
+        <div id="language" onclick="setLanguage()"><img class="grayscale" title="Namen übersetzen" id="languageHeader" src="./img/german.png" alt="Language">
+          <span class="translate-text">Translate</span>
+        </div>
+        <h1>Pokedex</h1>
+        <div id="search">Suchfeld</div>
       </header>
       <div id="pokedex"></div>
       <div id="morePokemon" onClick="loadMorePokemon()">
@@ -26,6 +30,7 @@
     </div>
 
     <div id="detail" class="detail-bg d-none" onclick="closeDetail()">      
+      <img id="prevPokemon" src="./img/arrow-left-solid.svg" alt="">
       <div id="content">        
         <div id="headline" onclick="doNotClose(event)">
           <div class="headlineInfo">
@@ -41,6 +46,7 @@
           <div id="stats"></div>
         </div>
       </div>
+      <img id="nextPokemon" src="./img/arrow-right-solid.svg" alt="">
     </div>
     
     <script src="./js/json.js"></script>

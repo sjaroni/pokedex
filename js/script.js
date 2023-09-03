@@ -9,7 +9,10 @@ let pokemonWeight = [];
 let pokemonHeight = [];
 let pokemonStats = [];
 let currentImage;
+let currentPokemonId = 0;
 let language;
+let nextPokemon = document.getElementById('nextPokemon');
+let prevPokemon = document.getElementById('prevPokemon');
 
 async function init() {
   getLanguage();
@@ -36,7 +39,7 @@ async function showAllPokemon(responseAsJson) {
     await getPokemonBmi(j);
     await renderPokedexSpeciesColor(j);
     formattedPokemonNumber = formatNumber(j);
-    await renderPokedexPokemon(i, pokemon);
+    await renderPokedexPokemon(i, pokemon, j);
     allPokemon.push(pokemon);
     j++;
   }
@@ -56,24 +59,19 @@ async function loadMorePokemon() {
   loadAllPokemon();
 }
 
-async function showPokemonDetail(
-  id,
-  pokemon,
-  formattedPokemonNumber,
-  pokemonBackgroundColor,
-  pokemonWeight,
-  pokemonHeight,
-) {
-  document.getElementById('container').classList.toggle('d-none');
+async function showPokemonDetail(id,
+  pokemon,formattedPokemonNumber, pokemonBackgroundColor, pokemonWeight, pokemonHeight,) {
+  currentPokemonId = id;
+  document.getElementById('container').classList.toggle('d-none');  
+  let visibilityPrev = id === 1 ? 'hidden' : 'visible';
+  let visibilityNext = id === loadPokemonCounter ? 'hidden' : 'visible';
+  document.getElementById('prevPokemon').style.visibility = visibilityPrev;
+  document.getElementById('nextPokemon').style.visibility = visibilityNext;
   document.getElementById('detail').classList.toggle('d-none');
   document.getElementById('right').innerHTML = `#${formattedPokemonNumber}`;
-  document.getElementById(
-    'headline',
-  ).style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
-  document.getElementById(
-    'pokemonPicture',
-  ).innerHTML = `<img class="pokemonImages" src="${pokemonImages[id]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;  
-  await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);  
+  document.getElementById('headline').style = `background: linear-gradient(${pokemonBackgroundColor}, #9198e5);`;
+  document.getElementById('pokemonPicture').innerHTML = `<img class="pokemonImages" src="${pokemonImages[id - 1]}" title="Picture of ${pokemon}" alt="Picture of ${pokemon}">`;
+  await renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight);
   await loadPokemonStats(id);
 }
 
@@ -119,30 +117,53 @@ function doNotClose(event) {
   event.stopPropagation();
 }
 
-async function setLanguage() {  
-  let flagImage = document.getElementById('languageHeader');  
+async function setLanguage() {
+  let flagImage = document.getElementById('languageHeader');
   flagImage.classList.toggle('grayscale');
 
   if (flagImage.classList.contains('grayscale')) {
     language = 'en';
   } else {
     language = 'de';
-  }  
+  }
   localStorage.setItem('language', language);
   await loadAllPokemon();
 }
 
-function getLanguage() {  
+function getLanguage() {
   language = localStorage.getItem('language');
   if (!language) {
     language = 'en';
     localStorage.setItem('language', language);
-  }
-  else if (language == 'en')
-  {   
+  } else if (language == 'en') {
     document.getElementById('languageHeader').classList.add('grayscale');
-  }
-  else{   
+  } else {
     document.getElementById('languageHeader').classList.remove('grayscale');
   }
 }
+
+nextPokemon.addEventListener('click', function () {  
+  let nextPokemonId = currentPokemonId+1;
+  if(nextPokemonId <= loadPokemonCounter)
+  {    
+    let nextPokemonName = language === 'en' ? allPokemon[currentPokemonId] : allPokemonGerman[currentPokemonId];
+    let nextPokemonFormattedNumber = formatNumber(nextPokemonId);
+    let nextPokemonBackgroundColor = pokemonBackgroundColor[currentPokemonId];
+    let nextPokemonWeight = pokemonWeight[currentPokemonId];
+    let nextPokemonHeight = pokemonHeight[currentPokemonId];    
+    showPokemonDetail(nextPokemonId, nextPokemonName, nextPokemonFormattedNumber, nextPokemonBackgroundColor, nextPokemonWeight, nextPokemonHeight,);
+  }
+});
+
+prevPokemon.addEventListener('click', function () {  
+  let prevPokemonId = currentPokemonId-1;
+  if(prevPokemonId >= 1)
+  {    
+    let prevPokemonName = language === 'en' ? allPokemon[prevPokemonId-1] : allPokemonGerman[prevPokemonId-1];
+    let prevPokemonFormattedNumber = formatNumber(prevPokemonId);
+    let prevPokemonBackgroundColor = pokemonBackgroundColor[prevPokemonId-1];
+    let prevPokemonWeight = pokemonWeight[prevPokemonId-1];
+    let prevPokemonHeight = pokemonHeight[prevPokemonId-1];
+    showPokemonDetail(prevPokemonId, prevPokemonName, prevPokemonFormattedNumber, prevPokemonBackgroundColor, prevPokemonWeight, prevPokemonHeight,);
+  }
+});

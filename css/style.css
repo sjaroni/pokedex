@@ -20,7 +20,7 @@ body {
 header {
   background-color: #d42937;  
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   height: 80px;
 }
@@ -29,12 +29,16 @@ header img{
   height: 25px;
 }
 
-header div{
+header #language{
   display: flex;
   align-items: center;
   gap: 4px;
   cursor: pointer;
 }
+
+/* header #search{
+  width: 120px;
+} */
 
 .detail-bg {
   background-color: #2b292c;
@@ -45,9 +49,8 @@ header div{
   bottom: 0;
   top: 0;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  flex-direction: column;
 }
 
 .detail {
@@ -55,6 +58,19 @@ header div{
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#prevPokemon, #nextPokemon{
+  z-index: 10;
+  filter: drop-shadow(0px 0px 4px #2b292c);
+  height: 30px;
+  cursor: pointer;
+}
+
+#prevPokemon:hover, #nextPokemon:hover{
+  cursor: pointer;
+  scale: 1.02;
+  filter: drop-shadow(0px 0px 4px #e6e6eb);
 }
 
 #content {
@@ -326,6 +342,13 @@ h1 {
   }
   #pokemonType{
     width: 100%;
+  }
+
+  .translate-text {
+    display: none;
+  }
+  header h1{
+    font-size: 1.5em;
   }
 }
 

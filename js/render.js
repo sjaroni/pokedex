@@ -1,8 +1,8 @@
 /* showing each pokemon on pokedex */
-function renderPokedexPokemon(i, pokemon) {  
+function renderPokedexPokemon(i, pokemon, j) {  
   let pokemonText = language === 'en' ? `${pokemon}` : `${allPokemonGerman[i]}`;
   pokedex.innerHTML += /*html*/ `          
-  <div onclick="showPokemonDetail(${i}, '${pokemonText}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
+  <div onclick="showPokemonDetail(${j}, '${pokemonText}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
       id="${formattedPokemonNumber}" style="background: linear-gradient(${pokemonBackgroundColor[i]}, #9198e5);" class="pokemon" title="Picture of ${pokemonText}">
     <img class="pokemonImages" title="Picture of ${pokemonText}" src="${pokemonImages[i]}" alt="Picture of ${pokemonText}">
     <p class="pokemonName">${pokemonText}</p>
