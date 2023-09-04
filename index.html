@@ -19,8 +19,13 @@
         <div id="language" onclick="setLanguage()"><img class="grayscale" title="Namen übersetzen" id="languageHeader" src="./img/german.png" alt="Language">
           <span class="translate-text">Translate</span>
         </div>
-        <h1>Pokedex</h1>
-        <div id="search">Suchfeld</div>
+        <div id="description">
+          <img src="./img/icons8-pokeball-96.png" alt="Pokeball">
+          <h1 class="header-text">Pokedex</h1>
+        </div>
+        <div id="searcharea">
+          <input type="text" id="search" title="Search Pokemon" placeholder="search Pokemon" onkeyup="filterNames()">
+        </div>
       </header>
       <div id="pokedex"></div>
       <div id="morePokemon" onClick="loadMorePokemon()">

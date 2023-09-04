@@ -167,3 +167,25 @@ prevPokemon.addEventListener('click', function () {
     showPokemonDetail(prevPokemonId, prevPokemonName, prevPokemonFormattedNumber, prevPokemonBackgroundColor, prevPokemonWeight, prevPokemonHeight,);
   }
 });
+
+function filterNames(){
+  // abhängig von Sprache
+  //let prevPokemonName = language === 'en' ? allPokemon[prevPokemonId-1] : allPokemonGerman[prevPokemonId-1];
+  let search = document.getElementById('search').value
+  search = search.toLowerCase();
+  hidePokemon(search);
+}
+
+function hidePokemon(search){
+  let pokemonElements = document.querySelectorAll(".pokemon");
+  for (let i = 0; i < pokemonElements.length; i++) {
+    let element = pokemonElements[i].innerText;
+    if (element.toLowerCase().includes(search)) {
+      pokemonElements[i].classList.remove('d-none');
+    }
+    else
+    {
+      pokemonElements[i].classList.add('d-none');
+    }
+  }
+}
