@@ -17,25 +17,24 @@
     <div id="container" class="container">
       <header>
         <div id="language" onclick="setLanguage()"><img class="grayscale" title="Namen übersetzen" id="languageHeader" src="./img/german.png" alt="Language">
-          <span class="translate-text">Translate</span>
+          <span id="translate-text">Translate</span>
         </div>
-        <div id="description">
+        <a id="description" href="#">
           <img src="./img/icons8-pokeball-96.png" alt="Pokeball">
           <h1 class="header-text">Pokedex</h1>
-        </div>
+        </a>
         <div id="searcharea">
           <input type="text" id="search" title="Search Pokemon" placeholder="search Pokemon" onkeyup="filterNames()">
         </div>
       </header>
       <div id="pokedex"></div>
       <div id="morePokemon" onClick="loadMorePokemon()">
-        <p>Load <span id="morePokemonCounter"></span> more ...</p>
+        <p><span id="translateMore">Load more</span> (+ <span id="morePokemonCounter"></span> Pokemon)</p>
         <img src="./img/icons8-pokeball-48.png" alt="" />
       </div>
     </div>
 
     <div id="detail" class="detail-bg d-none" onclick="closeDetail()">      
-      <img id="prevPokemon" src="./img/arrow-left-solid.svg" alt="">
       <div id="content">        
         <div id="headline" onclick="doNotClose(event)">
           <div class="headlineInfo">
@@ -46,12 +45,15 @@
           </div>
           <div id="pokemonPicture" onclick="doNotClose(event)"></div>
         </div>
+        <div id="navigation">
+          <img id="prevPokemon" title="previous Pokemon" src="./img/arrow-left-solid.svg" alt="">
+          <img id="nextPokemon" title="next Pokemon" src="./img/arrow-right-solid.svg" alt="">
+        </div>
         <div id="pokemonInfos" onclick="doNotClose(event)">
           <div id="general"></div>
           <div id="stats"></div>
         </div>
       </div>
-      <img id="nextPokemon" src="./img/arrow-right-solid.svg" alt="">
     </div>
     
     <script src="./js/json.js"></script>

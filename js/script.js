@@ -126,8 +126,9 @@ async function setLanguage() {
   } else {
     language = 'de';
   }
-  localStorage.setItem('language', language);
+  localStorage.setItem('language', language);  
   await loadAllPokemon();
+  translateText();
 }
 
 function getLanguage() {
@@ -140,6 +141,7 @@ function getLanguage() {
   } else {
     document.getElementById('languageHeader').classList.remove('grayscale');
   }
+  translateText();
 }
 
 nextPokemon.addEventListener('click', function () {  
@@ -168,9 +170,7 @@ prevPokemon.addEventListener('click', function () {
   }
 });
 
-function filterNames(){
-  // abhängig von Sprache
-  //let prevPokemonName = language === 'en' ? allPokemon[prevPokemonId-1] : allPokemonGerman[prevPokemonId-1];
+function filterNames(){  
   let search = document.getElementById('search').value
   search = search.toLowerCase();
   hidePokemon(search);
@@ -187,5 +187,21 @@ function hidePokemon(search){
     {
       pokemonElements[i].classList.add('d-none');
     }
+  }
+}
+
+function translateText(){
+  if(language === 'en')
+  {
+    document.getElementById('translate-text').innerHTML = 'Translate';
+    document.getElementById('search').placeholder = 'search Pokemon';
+    document.getElementById('languageHeader').title = 'translate Names';
+    document.getElementById('translateMore').innerHTML = 'Load more ...';
+  } else
+  {
+    document.getElementById('translate-text').innerHTML = 'Übersetzen';
+    document.getElementById('search').placeholder = 'Pokemon suchen';
+    document.getElementById('languageHeader').title = 'Namen übersetzen';
+    document.getElementById('translateMore').innerHTML = 'Mehr laden ...';
   }
 }

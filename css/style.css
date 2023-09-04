@@ -56,11 +56,29 @@ header #description{
   align-items: center;
 }
 
-.detail {
+input{
+  border-radius: 4px;
+  height: 22px;
+}
+
+::placeholder {
+  text-align: center; 
+}
+
+#detail {
   background-color: #2b292c;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
+}
+
+#navigation{
+  display: flex;  
+  justify-content: space-between;
+  width: 100%;  
+  max-width: 864px;
+  top: -75px;
+  position: relative;
 }
 
 #prevPokemon, #nextPokemon{
@@ -68,6 +86,7 @@ header #description{
   filter: drop-shadow(0px 0px 4px #2b292c);
   height: 30px;
   cursor: pointer;
+  margin: 10px;
 }
 
 #prevPokemon:hover, #nextPokemon:hover{
@@ -93,11 +112,12 @@ header #description{
   left: 0;
   right: 0;
   bottom: 0;
-  width: calc(60vw + 6px);
+  width: calc(60vw + 6px);  
+  max-width: 864px;
   height: 40vh;
   object-fit: contain;
   position: relative;
-  border-radius: 30px;  
+  border-radius: 30px;
 }
 
 .headlineInfo {
@@ -189,12 +209,13 @@ h1 {
   width: 75%;
   height: 75%;
   object-fit: contain;
-  filter: drop-shadow(0px 0px 4px #2b292c);
+  filter: drop-shadow(0px 0px 4px #2b292c);  
 }
 
 #pokemonInfos {
   width: 60vw;
-  top: -25px;
+  max-width: 858px;
+  top: -75px;
   border: 3px solid gray;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
@@ -314,12 +335,12 @@ h1 {
   }
 
   #headline {
-    width: calc(50vw + 6px);
-    height: 15vh;
+    width: calc(65vw + 6px);
+    height: 20vh;
   }
 
   #pokemonInfos {
-    width: 50vw;
+    width: 65vw;
   }
 
   .pokemonStats{
@@ -347,62 +368,21 @@ h1 {
     width: 100%;
   }
 
-  .translate-text {
+  #translate-text {
     display: none;
   }
 
   .header-text {
     display: none;
   }
-}
 
-@media (max-width: 420px) {
-  .pokemon {
-    height: 170px;
-    width: 170px;
-    font-size: 18px;
+  #pokemonPicture{
+    width: 60%;
+    height: 60%;
   }
 
-  #bmi{
-    display: block;
-    text-align: center;
-  }
-  #pokemonHeight, #pokemonWeight {
-    width: 100%;
-  }
-
-  #pokemonType{
-    flex-direction: column;
-    margin-top: 60px;
-    margin-bottom: 24px;
-  }
-
-  #pokedex .pokemonImages {
-    height: 100px;
-  }
-
-  #pokemonPicture {
-    width: 50%;
-    height: 50%;
-  }
-
-  #general{
-    width: 100%;
-  }
-
-  #general > h1 {
-    font-size: 1em;
-  }
-  
-
-  #stats > h2 {
-    font-size: 1em;
-  }
-
-  
-
-  .value, .unit{
-    font-size: 16px;
+  #navigation{
+    top: -60px;
   }
 
 }
