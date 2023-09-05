@@ -35,9 +35,8 @@ async function showAllPokemon(responseAsJson) {
   allPokemon = [];
   for (let i = 0; i < responseAsJson['results'].length; i++) {
     const pokemon = responseAsJson['results'][i]['name'];
-    await getPokemonPicture(j);
-    await getPokemonBmi(j);
-    await renderPokedexSpeciesColor(j);
+    await getPokemonPicture(j);  
+    await renderPokedexSpeciesColor(j);    
     formattedPokemonNumber = formatNumber(j);
     await renderPokedexPokemon(i, pokemon, j);
     allPokemon.push(pokemon);
@@ -96,12 +95,10 @@ async function getPokemonPicture(pokemon) {
   pokemonImages.push(
     responseAsJson['sprites']['other']['home']['front_default'],
   );
+  await getPokemonBmi(responseAsJson, pokemon);
 }
 
-async function getPokemonBmi(pokemon) {
-  let url = `${API_URL.single}${pokemon}`;
-  let response = await fetch(url);
-  let responseAsJson = await response.json();
+async function getPokemonBmi(responseAsJson, pokemon) {  
   let formattedWeight = responseAsJson['weight'] / 10;
   let formattedHeight = responseAsJson['height'] / 10;
   pokemonWeight.push(formattedWeight);
