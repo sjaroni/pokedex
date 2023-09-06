@@ -149,18 +149,29 @@ h1 {
   flex-wrap: wrap;  
 }
 
-#morePokemon {
+#loadArea {
   display: flex;
   justify-content: center;
-  align-items: center;
-  cursor: pointer;
+  align-items: center;  
   background-color: #d42937;
   height: 50px;
   font-size: 1em;
 }
 
-#morePokemon img {
-  height: 32px;
+#morePokemon{
+  cursor: pointer;
+  border-radius: 8px;
+  border: 1px solid #e6e6eb;
+  height: 34px;
+  font-size: 20px;
+  background-color: #d42937;
+  color: #e6e6eb;
+  padding: 6px;
+}
+
+#morePokemon:hover{
+  scale: 1.02;
+  filter: drop-shadow(0px 0px 4px #e6e6eb);
 }
 
 .d-none {

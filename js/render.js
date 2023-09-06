@@ -1,5 +1,5 @@
 /* showing each pokemon on pokedex */
-function renderPokedexPokemon(i, pokemon, j) {  
+async function renderPokedexPokemon(i, pokemon, j) {  
   let pokemonText = language === 'en' ? `${pokemon}` : `${allPokemonGerman[i]}`;
   pokedex.innerHTML += /*html*/ `          
   <div onclick="showPokemonDetail(${j}, '${pokemonText}', '${formattedPokemonNumber}', '${pokemonBackgroundColor[i]}', '${pokemonWeight[i]}', '${pokemonHeight[i]}')" 
@@ -19,7 +19,7 @@ async function renderPokedexSpeciesColor(pokemon) {
 }
 
 /* render color of species */
-function renderPokemonType(responseAsJson) {
+async function renderPokemonType(responseAsJson) {
   let pokemonType = document.getElementById('pokemonType');
   let pokemonTypes = responseAsJson['types'].length;
   for (let i = 0; i < pokemonTypes; i++) {
@@ -30,7 +30,7 @@ function renderPokemonType(responseAsJson) {
 }
 
 /* getting general infos */
-function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight) {
+async function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight) {
   document.getElementById('general').innerHTML = `
   <h1>${pokemon}</h1>
   <div id="pokemonType"></div>
@@ -42,7 +42,7 @@ function renderPokemonGeneral(pokemon, pokemonWeight, pokemonHeight) {
 }
 
 /* render basic stats of each pokemon */
-function renderPokemonStats(pokemonSum) {
+async function renderPokemonStats(pokemonSum) {
   document.getElementById('stats').innerHTML = `
     <h2>Base Stats</h2>
     <div class="pokemonStats">
@@ -85,4 +85,5 @@ function renderPokemonStats(pokemonSum) {
 async function renderMorePokemon(){  
   let morePokemonCounterText = document.getElementById('morePokemonCounter');
   morePokemonCounterText.innerHTML = ' ' + morePokemonCounter + ' ';
+  enableLoadingButton();
 }

@@ -15,7 +15,7 @@ let nextPokemon = document.getElementById('nextPokemon');
 let prevPokemon = document.getElementById('prevPokemon');
 
 async function init() {
-  getLanguage();
+  await getLanguage();
   await loadAllPokemon();
 }
 
@@ -50,12 +50,13 @@ function formatNumber(number) {
 }
 
 async function loadMorePokemon() {
+  document.getElementById('morePokemon').setAttribute('disabled', 'true');  
   loadPokemonCounter = loadPokemonCounter + morePokemonCounter;
   loadPokemonOffset = loadPokemonOffset + morePokemonCounter;
   pokemonImages = [];
   pokemonBackgroundColor = [];
-  allPokemonGerman = [];
-  loadAllPokemon();
+  allPokemonGerman = [];  
+  await loadAllPokemon();
 }
 
 async function showPokemonDetail(id,
@@ -84,7 +85,7 @@ async function loadPokemonStats(id) {
     pokemonStats.push(responseAsJson['stats'][i]['base_stat']);
     pokemonSum = pokemonSum + pokemonStats[i];
   }
-  renderPokemonStats(pokemonSum);
+  await renderPokemonStats(pokemonSum);
   await renderPokemonType(responseAsJson);
 }
 
@@ -125,10 +126,10 @@ async function setLanguage() {
   }
   localStorage.setItem('language', language);  
   await loadAllPokemon();
-  translateText();
+  await translateText();
 }
 
-function getLanguage() {
+async function getLanguage() {
   language = localStorage.getItem('language');
   if (!language) {
     language = 'en';
@@ -138,7 +139,7 @@ function getLanguage() {
   } else {
     document.getElementById('languageHeader').classList.remove('grayscale');
   }
-  translateText();
+  await translateText();
 }
 
 nextPokemon.addEventListener('click', function () {  
@@ -167,13 +168,13 @@ prevPokemon.addEventListener('click', function () {
   }
 });
 
-function filterNames(){  
+async function filterNames(){  
   let search = document.getElementById('search').value
   search = search.toLowerCase();
-  hidePokemon(search);
+  await hidePokemon(search);
 }
 
-function hidePokemon(search){
+async function hidePokemon(search){
   let pokemonElements = document.querySelectorAll(".pokemon");
   for (let i = 0; i < pokemonElements.length; i++) {
     let element = pokemonElements[i].innerText;
@@ -187,7 +188,7 @@ function hidePokemon(search){
   }
 }
 
-function translateText(){
+async function translateText(){
   if(language === 'en')
   {
     document.getElementById('translate-text').innerHTML = 'Translate';
@@ -201,4 +202,8 @@ function translateText(){
     document.getElementById('languageHeader').title = 'Namen übersetzen';
     document.getElementById('translateMore').innerHTML = 'Mehr laden ...';
   }
+}
+
+function enableLoadingButton() {  
+    document.getElementById('morePokemon').removeAttribute('disabled');
 }
