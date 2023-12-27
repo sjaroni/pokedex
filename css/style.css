@@ -143,10 +143,15 @@ h1 {
   margin-block-end: 0;
 }
 
-#pokedex {
+#pokedex,
+#nothingFound {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;  
+}
+
+#nothingFound{
+  margin: 16px;
 }
 
 #loadArea {

@@ -169,22 +169,29 @@ prevPokemon.addEventListener('click', function () {
 });
 
 async function filterNames(){  
-  let search = document.getElementById('search').value
+  let search = document.getElementById('search').value;
+  document.getElementById('nothingFound').classList.add('d-none');
+  let erg = 0;  
   search = search.toLowerCase();
-  await hidePokemon(search);
+  await hidePokemon(search, erg);
 }
 
-async function hidePokemon(search){
+async function hidePokemon(search, erg){
   let pokemonElements = document.querySelectorAll(".pokemon");
   for (let i = 0; i < pokemonElements.length; i++) {
     let element = pokemonElements[i].innerText;
     if (element.toLowerCase().includes(search)) {
       pokemonElements[i].classList.remove('d-none');
+      erg++;
     }
     else
     {
       pokemonElements[i].classList.add('d-none');
     }
+  }
+  
+  if(erg == 0){
+    document.getElementById('nothingFound').classList.remove('d-none');
   }
 }
 
